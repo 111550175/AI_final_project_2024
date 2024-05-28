@@ -59,12 +59,6 @@ class Generator(nn.Module):
         self.fc1 = nn.Linear(state_dim + latent_dim, 128)
         self.fc2 = nn.Linear(128, 128)
         self.fc3 = nn.Linear(128, action_dim)
-
-        self.e1 = nn.Linear(state_dim + action_dim, 128)
-        self.e2 = nn.Linear(128, 128)
-
-        self.mean = nn.Linear(128, latent_dim)
-        self.log_std = nn.Linear(128, latent_dim)
         
         self.max_action = max_action
         self.action_dim = action_dim
@@ -77,20 +71,6 @@ class Generator(nn.Module):
         x = F.leaky_relu(self.fc2(x))
         action = torch.tanh(self.fc3(x))  # Assuming action space is normalized to [-1, 1]
         return action * self.max_action
-	
-    def get_info(self, state, action):
-        z = F.relu(self.e1(torch.cat([state, action], 1)))
-        z = F.relu(self.e2(z))
-
-        mean = self.mean(z)
-		# Clamped for numerical stability 
-        log_std = self.log_std(z).clamp(-4, 15)
-        std = torch.exp(log_std)
-        z = mean + std * torch.randn_like(std)
-		
-        u = self.forward(state, z)
-
-        return u, mean, std
 	
     def generate_noise(self, num_samples):
         noise = torch.normal(0, .3, size=(num_samples, self.latent_dim)).to(self.device).clamp(-1., 1.)
@@ -198,19 +178,6 @@ class BCQ(object):
 	def train(self, replay_buffer, iterations, batch_size=100):
 
 
-        # debugging
-		debug_gen_loss = 0.
-		debug_dis_loss = 0.
-		debug_dis_t_loss = 0.
-		debug_dis_f_loss = 0.
-		debug_KL_loss = 0.
-		debug_dis_gp_loss = 0.
-		debug_critic_loss = 0.
-		debug_actor_loss = 0.
-		debug_sampled_actions_list = []
-		debug_next_actions_list = []
-		debug_d_output_list = []
-
 		for it in range(iterations):
 			# Sample replay buffer / batch
 			state, action, next_state, reward, not_done = replay_buffer.sample(batch_size)
@@ -236,9 +203,7 @@ class BCQ(object):
 			false_labels = torch.normal(0.1, .1, size=(batch_size, 1)).clamp(0., 0.2).to(self.device)  # soft target labels
 			fake_output = self.dis(state, fake_action.detach())
 			fake_d_loss = F.binary_cross_entropy(fake_output, false_labels)
-			recon, mean, std = self.gen.get_info(state, action)
-			KL_loss	= -0.5 * (1 + torch.log(std.pow(2)) - mean.pow(2) - std.pow(2)).mean()
-			D_loss = real_d_loss + fake_d_loss + self.lmbda * KL_loss
+			D_loss = real_d_loss + fake_d_loss
 			
 			self.dis_optimizer.zero_grad()
 			D_loss.backward()
@@ -252,11 +217,6 @@ class BCQ(object):
 			g_loss.backward()
 			self.gen_optimizer.step()
 
-			debug_gen_loss += g_loss.item()
-			debug_dis_loss += D_loss.item()
-			debug_dis_t_loss += real_d_loss.item()
-			debug_dis_f_loss += fake_d_loss.item()
-			debug_KL_loss += KL_loss.item()
 	
 			# Critic Training
 			with torch.no_grad():
@@ -294,10 +254,6 @@ class BCQ(object):
 			actor_loss.backward()
 			self.actor_optimizer.step()
 
-			debug_critic_loss += critic_loss.item()
-			debug_actor_loss += actor_loss.item()
-			debug_sampled_actions_list.append(sampled_actions[0].cpu().data.numpy())
-
 
 			# Update Target Networks 
 			for param, target_param in zip(self.critic.parameters(), self.critic_target.parameters()):
@@ -305,9 +261,3 @@ class BCQ(object):
 
 			for param, target_param in zip(self.actor.parameters(), self.actor_target.parameters()):
 				target_param.data.copy_(self.tau * param.data + (1 - self.tau) * target_param.data)
-
-		if True:
-			print("gen/dis/dis_t/dis_f loss is ", np.round(debug_gen_loss/iterations, 3), np.round(debug_dis_loss/iterations, 3),
-				  np.round(debug_dis_t_loss/iterations, 3), np.round(debug_dis_f_loss/iterations, 3))
-			print("a/c loss is ", np.round(debug_actor_loss/iterations, 2), np.round(debug_critic_loss / iterations, 2))
-			print("KL loss is", np.round(debug_KL_loss/iterations, 3))
