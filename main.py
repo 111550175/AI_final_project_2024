@@ -5,7 +5,7 @@ import numpy as np
 import os
 import torch
 
-import BCQ_ours1
+import BCQ_GAN
 import utils
 
 
@@ -39,7 +39,7 @@ def train_BCQ(state_dim, action_dim, max_action, device, args, seed):
 		pol_vals = policy.train(replay_buffer, iterations=int(args.eval_freq), batch_size=args.batch_size)
 
 		evaluations.append(eval_policy(policy, args.env, seed))
-		np.save(f"./results/BCQ_ours1_{setting}", evaluations)
+		np.save(f"./results/GAN/BCQ_GAN_{setting}", evaluations)
 
 		training_iters += args.eval_freq
 		print(f"Training iterations: {training_iters}")
