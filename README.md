@@ -1,4 +1,4 @@
-# AI_final_project_2024 <br> Generate text summaries from movie screenshots
+# AI_final_project_2024 <br> Batch-Constrained deep Q-learning(BCQ) on D4RL and ablation study
 
 ## Member
 - 111550049 林德倫
@@ -8,7 +8,7 @@
 
 ## Introduction
 We first train original BCQ algorithm with D4RL dataset to be our baseline. And we do ablation study based on three method different from original BCQ.
-1. We replace the variational auto-encoder (VAE) with conditional generative adversarial nets (CGAN).
+1. We replace the variational auto-encoder(VAE) with conditional generative adversarial nets(CGAN).
 2. They modify the original Clipped Double Q-learning:
    $$y = r + \gamma\max\limits_{a_i}\left[\min\limits_{j=1,2} Q_{\theta'_j} (s',a_i)\right]$$
 
