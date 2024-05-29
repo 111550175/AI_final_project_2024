@@ -8,9 +8,9 @@
 
 ## Train
 - Original BCQ
-'''
+```
 python main.py
-'''
+```
 - BCQ with CGAN
 '''
 python main.py --method BCQ_GAN
