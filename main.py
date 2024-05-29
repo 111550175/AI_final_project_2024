@@ -5,7 +5,10 @@ import numpy as np
 import os
 import torch
 
+import BCQ
 import BCQ_GAN
+import BCQ_quadruple
+import BCQ_shared
 import utils
 
 
@@ -16,7 +19,14 @@ def train_BCQ(state_dim, action_dim, max_action, device, args):
 	setting = f"{args.env}_{args.seed}"
 
 	# Initialize policy
-	policy = BCQ_GAN.BCQ(state_dim, action_dim, max_action, device, args.discount, args.tau, args.lmbda, args.phi)
+	if args.method == 'BCQ':
+		policy = BCQ.BCQ(state_dim, action_dim, max_action, device, args.discount, args.tau, args.lmbda, args.phi)
+	elif args.method == 'BCQ_GAN':
+		policy = BCQ_GAN.BCQ(state_dim, action_dim, max_action, device, args.discount, args.tau, args.lmbda, args.phi)
+	elif args.method == 'BCQ_quadruple':
+		policy = BCQ_quadruple.BCQ(state_dim, action_dim, max_action, device, args.discount, args.tau, args.lmbda, args.phi)
+	else:
+		policy = BCQ_shared.BCQ(state_dim, action_dim, max_action, device, args.discount, args.tau, args.lmbda, args.phi)
 
 	# Load buffer
 	replay_buffer = utils.ReplayBuffer(state_dim, action_dim, device)
@@ -39,7 +49,14 @@ def train_BCQ(state_dim, action_dim, max_action, device, args):
 		pol_vals = policy.train(replay_buffer, iterations=int(args.eval_freq), batch_size=args.batch_size)
 
 		evaluations.append(eval_policy(policy, args.env, args.seed))
-		np.save(f"./results/GAN/BCQ_GAN_{setting}", evaluations)
+		if args.method == 'BCQ':
+			np.save(f"./results/baseline/BCQ_{setting}", evaluations)
+		elif args.method == 'BCQ_GAN':
+			np.save(f"./results/GAN/BCQ_GAN_{setting}", evaluations)
+		elif args.method == 'BCQ_quadruple':
+			np.save(f"./results/quadruple/BCQ_quadruple_{setting}", evaluations)
+		else:
+			np.save(f"./results/shared/BCQ_shared_{setting}", evaluations)
 
 		training_iters += args.eval_freq
 		print(f"Training iterations: {training_iters}")
@@ -80,6 +97,7 @@ if __name__ == "__main__":
 	parser.add_argument("--tau", default=0.005)                     # Target network update rate
 	parser.add_argument("--lmbda", default=0.75)                    # Weighting for clipped double Q-learning in BCQ
 	parser.add_argument("--phi", default=0.05)                      # Max perturbation hyper-parameter for BCQ
+	parser.add_argument("--method", default='BCQ')                  # Choose method to train
 	args = parser.parse_args()
 
 	print("---------------------------------------")	
