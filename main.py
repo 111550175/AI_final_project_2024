@@ -16,7 +16,7 @@ def train_BCQ(state_dim, action_dim, max_action, device, args):
 	setting = f"{args.env}_{args.seed}"
 
 	# Initialize policy
-	policy = BCQ_ours1.BCQ(state_dim, action_dim, max_action, device, args.discount, args.tau, args.lmbda, args.phi)
+	policy = BCQ_GAN.BCQ(state_dim, action_dim, max_action, device, args.discount, args.tau, args.lmbda, args.phi)
 
 	# Load buffer
 	replay_buffer = utils.ReplayBuffer(state_dim, action_dim, device)
