@@ -8,6 +8,7 @@
 
 ## Introduction
 We first train original BCQ algorithm with D4RL dataset to be our baseline. And we do ablation study based on three method different from original BCQ.
+1. aa
 
 ## Train
 - Original BCQ
