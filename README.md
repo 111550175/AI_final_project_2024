@@ -6,6 +6,9 @@
 - 111550175 劉承翰
 - 111550079 方品仁
 
+## Introduction
+We first train original BCQ algorithm with D4RL dataset to be our baseline. And we do ablation study based on three method different from original BCQ.
+
 ## Train
 - Original BCQ
 ```
