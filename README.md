@@ -5,3 +5,21 @@
 - 111550151 徐嘉亨
 - 111550175 劉承翰
 - 111550079 方品仁
+
+## Train
+- Original BCQ
+'''
+python main.py
+'''
+- BCQ with CGAN
+'''
+python main.py --method BCQ_GAN
+'''
+- Original BCQ
+'''
+python main.py
+'''
+- Original BCQ
+'''
+python main.py
+'''
