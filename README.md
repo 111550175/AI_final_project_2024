@@ -10,9 +10,9 @@
 We first train original BCQ algorithm with D4RL dataset to be our baseline. And we do ablation study based on three method different from original BCQ.
 1. We replace the variational auto-encoder (VAE) with conditional generative adversarial nets (CGAN)
 2. They modify the original Clipped Double Q-learning:
-\begin{gather}
-$y = $
-\end{gather}
+$\begin{gather}
+y = 
+\end{gather}$
 
 ## Train
 - Original BCQ
