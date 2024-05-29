@@ -25,8 +25,11 @@ def train_BCQ(state_dim, action_dim, max_action, device, args):
 		policy = BCQ_GAN.BCQ(state_dim, action_dim, max_action, device, args.discount, args.tau, args.lmbda, args.phi)
 	elif args.method == 'BCQ_quadruple':
 		policy = BCQ_quadruple.BCQ(state_dim, action_dim, max_action, device, args.discount, args.tau, args.lmbda, args.phi)
-	else:
+	elif args.method == 'BCQ_shared':
 		policy = BCQ_shared.BCQ(state_dim, action_dim, max_action, device, args.discount, args.tau, args.lmbda, args.phi)
+	else:
+		print("Input error.")
+		return
 
 	# Load buffer
 	replay_buffer = utils.ReplayBuffer(state_dim, action_dim, device)
