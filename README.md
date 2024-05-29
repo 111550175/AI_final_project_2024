@@ -12,14 +12,14 @@
 python main.py
 ```
 - BCQ with CGAN
-'''
+```
 python main.py --method BCQ_GAN
-'''
-- Original BCQ
-'''
-python main.py
-'''
-- Original BCQ
-'''
-python main.py
-'''
+```
+- BCQ with quadruple Q-networks
+```
+python main.py --method BCQ_quadruple
+```
+- BCQ with shared layer
+```
+python main.py --method BCQ_shared
+```
