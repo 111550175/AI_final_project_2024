@@ -20,6 +20,20 @@ We first train original BCQ algorithm with D4RL dataset to be our baseline. And 
 
 4. We make the Actor and Critic shared the first layer.
 
+## Dataset
+We use ten datasets based on two task in mujoco: 1. Hopper 2. Walker2d
+
+- hopper-random-v0
+- hopper-medium-v0
+- hopper-expert-v0
+- hopper-medium-replay-v0
+- hopper-medium-expert-v0
+- walker2d-random-v0
+- walker2d-medium-v0
+- walker2d-expert-v0
+- walker2d-medium-replay-v0
+- walker2d-medium-expert-v0
+
 ## Train
 - Original BCQ
 ```
