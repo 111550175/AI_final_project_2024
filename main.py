@@ -11,9 +11,9 @@ import utils
 
 
 # Trains BCQ offline
-def train_BCQ(state_dim, action_dim, max_action, device, args, seed):
+def train_BCQ(state_dim, action_dim, max_action, device, args):
 	# For saving files
-	setting = f"{args.env}_{seed}"
+	setting = f"{args.env}_{args.seed}"
 
 	# Initialize policy
 	policy = BCQ_ours1.BCQ(state_dim, action_dim, max_action, device, args.discount, args.tau, args.lmbda, args.phi)
@@ -38,7 +38,7 @@ def train_BCQ(state_dim, action_dim, max_action, device, args, seed):
 	while training_iters < args.max_timesteps: 
 		pol_vals = policy.train(replay_buffer, iterations=int(args.eval_freq), batch_size=args.batch_size)
 
-		evaluations.append(eval_policy(policy, args.env, seed))
+		evaluations.append(eval_policy(policy, args.env, args.seed))
 		np.save(f"./results/GAN/BCQ_GAN_{setting}", evaluations)
 
 		training_iters += args.eval_freq
@@ -71,7 +71,7 @@ if __name__ == "__main__":
 	
 	parser = argparse.ArgumentParser()
 	parser.add_argument("--env", default='hopper-random-v0')        # OpenAI gym environment name
-	parser.add_argument("--seed", default=2, type=int)              # Sets Gym, PyTorch and Numpy seeds
+	parser.add_argument("--seed", default=0, type=int)              # Sets Gym, PyTorch and Numpy seeds
 	parser.add_argument("--eval_freq", default=5e3, type=float)     # How often (time steps) we evaluate
 	parser.add_argument("--max_timesteps", default=1e6, type=int)   # Max time steps to run environment or train for (this defines buffer size)
 	parser.add_argument("--start_timesteps", default=25e3, type=int)# Time steps initial random policy is used before training behavioral
@@ -102,4 +102,4 @@ if __name__ == "__main__":
 
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-	train_BCQ(state_dim, action_dim, max_action, device, args, arg.seed)
+	train_BCQ(state_dim, action_dim, max_action, device, args)
