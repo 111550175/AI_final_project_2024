@@ -51,3 +51,21 @@ python main.py --method BCQ_quadruple
 ```
 python main.py --method BCQ_shared
 ```
+
+## Plot the result
+- Original BCQ
+```
+python plot.py
+```
+- BCQ with CGAN
+```
+python plot.py --method GAN
+```
+- BCQ with clipped quadruple Q-learning
+```
+python plot.py --method quadruple
+```
+- BCQ with shared layer
+```
+python plot.py --method shared
+```
