@@ -20,6 +20,15 @@ We first train original BCQ algorithm with D4RL dataset to be our baseline. And 
 
 4. We make the Actor and Critic shared the first layer.
 
+## Setup for Mujoco and D4RL
+Because setup for D4RL is a bit complicated and it can't be installed in Windows. We install it under Ubuntu 20.04, but you can also install it in mac. You can refer to this link [An Installation Guide for MuJoCo and D4RL](https://docs.google.com/document/d/1yo4O9M0s-bUtiBRJLTAsi9_4UaEzf5yc8c5q-Ble3VU/edit). Based on the guide, our coding environment is a conda virtual environment where the version of python is 3.8.
+
+## Other requirement
+You should first enter the conda virtual environment and install the required packages in requirements.txt one by one. Or you can just run the following:
+```
+pip install -r requirements.txt
+```
+
 ## Dataset
 We use ten datasets based on two task in mujoco: 1. Hopper 2. Walker2d
 
