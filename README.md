@@ -30,7 +30,7 @@ pip install -r requirements.txt
 ```
 
 ## Dataset
-We use ten datasets based on two task in mujoco: 1. Hopper 2. Walker2d
+We use ten datasets based on two tasks in mujoco: 1. Hopper 2. Walker2d
 
 - hopper-random-v0
 - hopper-medium-v0
