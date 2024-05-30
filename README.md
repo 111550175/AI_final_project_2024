@@ -78,3 +78,7 @@ python plot.py --method quadruple
 ```
 python plot.py --method shared
 ```
+- Compare all results together
+```
+python compare.py
+```
