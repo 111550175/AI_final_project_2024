@@ -25,6 +25,7 @@ def random(args):
     plt.show()
     plt.close()
 
+    initialize_plot()
     plt.title('Walker2d-random-v0')
     rewards = np.array([np.load("./results/{}/BCQ_{}_walker2d-random-v0_{}.npy".format(args.method, args.method, seed)) for seed in range(3)]).transpose()
     rewards_avg = np.mean(rewards, axis = 1)
@@ -56,6 +57,7 @@ def medium(args):
     plt.show()
     plt.close()
 
+    initialize_plot()
     plt.title('Walker2d-medium-v0')
     rewards = np.array([np.load("./results/{}/BCQ_{}_walker2d-medium-v0_{}.npy".format(args.method, args.method, seed)) for seed in range(3)]).transpose()
     rewards_avg = np.mean(rewards, axis = 1)
@@ -87,6 +89,7 @@ def expert(args):
     plt.show()
     plt.close()
 
+    initialize_plot()
     plt.title('Walker2d-expert-v0')
     rewards = np.array([np.load("./results/{}/BCQ_{}_walker2d-expert-v0_{}.npy".format(args.method, args.method, seed)) for seed in range(3)]).transpose()
     rewards_avg = np.mean(rewards, axis = 1)
@@ -118,6 +121,7 @@ def medium_replay(args):
     plt.show()
     plt.close()
 
+    initialize_plot()
     plt.title('Walker2d-medium-replay-v0')
     rewards = np.array([np.load("./results/{}/BCQ_{}_walker2d-medium-replay-v0_{}.npy".format(args.method, args.method, seed)) for seed in range(3)]).transpose()
     rewards_avg = np.mean(rewards, axis = 1)
@@ -149,6 +153,7 @@ def medium_expert(args):
     plt.show()
     plt.close()
 
+    initialize_plot()
     plt.title('Walker2d-medium-expert-v0')
     rewards = np.array([np.load("./results/{}/BCQ_{}_walker2d-medium-expert-v0_{}.npy".format(args.method, args.method, seed)) for seed in range(3)]).transpose()
     rewards_avg = np.mean(rewards, axis = 1)
