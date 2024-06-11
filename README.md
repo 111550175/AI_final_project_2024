@@ -78,6 +78,18 @@ python plot.py --method quadruple
 ```
 python plot.py --method shared
 ```
+- Compare CGAN with baseline
+```
+python compare_with_baseline.py --method GAN
+```
+- Compare clipped quadruple Q-learning with baseline
+```
+python compare_with_baseline.py --method quadruple
+```
+- Compare shared layer with baseline
+```
+python compare_with_baseline.py --method shared
+```
 - Compare all results together
 ```
 python compare.py
